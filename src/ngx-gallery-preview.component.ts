@@ -446,18 +446,18 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
         this.changeDetectorRef.markForCheck();
 
         setTimeout(() => {
-            if (this.isLoaded(this.previewImage?.nativeElement)) {
-                this.loading = false;
-                this.startAutoPlay();
-                this.changeDetectorRef.markForCheck();
-            } else {
-                setTimeout(() => {
-                    if (this.loading) {
-                        this.showSpinner = true;
-                        this.changeDetectorRef.markForCheck();
-                    }
-                })
-                if (this.previewImage) {
+            if (this.previewImage) {
+                if (this.isLoaded(this.previewImage.nativeElement)) {
+                    this.loading = false;
+                    this.startAutoPlay();
+                    this.changeDetectorRef.markForCheck();
+                } else {
+                    setTimeout(() => {
+                        if (this.loading) {
+                            this.showSpinner = true;
+                            this.changeDetectorRef.markForCheck();
+                        }
+                    })
                     this.previewImage.nativeElement.onload = () => {
                         this.loading = false;
                         this.showSpinner = false;
@@ -467,6 +467,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
                     }
                 }
             }
+
         })
     }
 
