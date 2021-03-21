@@ -29,7 +29,7 @@ import { NgxGalleryHelperService } from './ngx-gallery-helper.service';
             <div class="ngx-gallery-preview-img-wrapper">
                 <img *ngIf="src && mimeType === 'image/jpeg'" #previewImage class="ngx-gallery-preview-img ngx-gallery-center" [src]="src" (click)="$event.stopPropagation()" (mouseenter)="imageMouseEnter()" (mouseleave)="imageMouseLeave()" (mousedown)="mouseDownHandler($event)" (touchstart)="mouseDownHandler($event)" [class.ngx-gallery-active]="!loading" [class.animation]="animation" [class.ngx-gallery-grab]="canDragOnZoom()" [style.transform]="getTransform()" [style.left]="positionLeft + 'px'" [style.top]="positionTop + 'px'"/>
                 <ng-container *ngIf="src && mimeType === 'application/pdf'">
-                    <div style="display: flex;align-items: center;justify-content: center;">
+                    <div style="display: flex;align-items: center;justify-content: center; margin-top: 50px;">
                         <iframe [src]="src" width="800px" height="600px"></iframe>
                     </div>
                 </ng-container>
@@ -446,7 +446,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
         this.changeDetectorRef.markForCheck();
 
         setTimeout(() => {
-            if (this.isLoaded(this.previewImage.nativeElement)) {
+            if (this.isLoaded(this.previewImage?.nativeElement)) {
                 this.loading = false;
                 this.startAutoPlay();
                 this.changeDetectorRef.markForCheck();
@@ -457,13 +457,14 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
                         this.changeDetectorRef.markForCheck();
                     }
                 })
-
-                this.previewImage.nativeElement.onload = () => {
-                    this.loading = false;
-                    this.showSpinner = false;
-                    this.previewImage.nativeElement.onload = null;
-                    this.startAutoPlay();
-                    this.changeDetectorRef.markForCheck();
+                if (this.previewImage) {
+                    this.previewImage.nativeElement.onload = () => {
+                        this.loading = false;
+                        this.showSpinner = false;
+                        this.previewImage.nativeElement.onload = null;
+                        this.startAutoPlay();
+                        this.changeDetectorRef.markForCheck();
+                    }
                 }
             }
         })
