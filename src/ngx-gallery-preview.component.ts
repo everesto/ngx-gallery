@@ -279,7 +279,6 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     }
 
     getSafeUrl(image: string): SafeUrl {
-        console.log(image);
         return image.substr(0, 10) === 'data:image' ?
             image : this.sanitization.bypassSecurityTrustResourceUrl(image);
     }
