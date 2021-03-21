@@ -27,7 +27,12 @@ import { NgxGalleryHelperService } from './ngx-gallery-helper.service';
         </div>
         <div class="ngx-gallery-preview-wrapper" (click)="closeOnClick && close()" (mouseup)="mouseUpHandler($event)" (mousemove)="mouseMoveHandler($event)" (touchend)="mouseUpHandler($event)" (touchmove)="mouseMoveHandler($event)">
             <div class="ngx-gallery-preview-img-wrapper">
-                <img *ngIf="src" #previewImage class="ngx-gallery-preview-img ngx-gallery-center" [src]="src" (click)="$event.stopPropagation()" (mouseenter)="imageMouseEnter()" (mouseleave)="imageMouseLeave()" (mousedown)="mouseDownHandler($event)" (touchstart)="mouseDownHandler($event)" [class.ngx-gallery-active]="!loading" [class.animation]="animation" [class.ngx-gallery-grab]="canDragOnZoom()" [style.transform]="getTransform()" [style.left]="positionLeft + 'px'" [style.top]="positionTop + 'px'"/>
+                <img *ngIf="src && mimeType === 'image/jpeg'" #previewImage class="ngx-gallery-preview-img ngx-gallery-center" [src]="src" (click)="$event.stopPropagation()" (mouseenter)="imageMouseEnter()" (mouseleave)="imageMouseLeave()" (mousedown)="mouseDownHandler($event)" (touchstart)="mouseDownHandler($event)" [class.ngx-gallery-active]="!loading" [class.animation]="animation" [class.ngx-gallery-grab]="canDragOnZoom()" [style.transform]="getTransform()" [style.left]="positionLeft + 'px'" [style.top]="positionTop + 'px'"/>
+                <ng-container *ngIf="src && mimeType === 'application/pdf'">
+                    <div style="display: flex;align-items: center;justify-content: center;">
+                        <iframe [src]="src" width="600px" height="600px"></iframe>
+                    </div>
+                </ng-container>
                 <ngx-gallery-bullets *ngIf="bullets" [count]="images.length" [active]="index" (onChange)="showAtIndex($event)"></ngx-gallery-bullets>
             </div>
             <div class="ngx-gallery-preview-text" *ngIf="showDescription && description" [innerHTML]="description" (click)="$event.stopPropagation()"></div>
@@ -38,6 +43,7 @@ import { NgxGalleryHelperService } from './ngx-gallery-helper.service';
 export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
 
     src: SafeUrl;
+    mimeType: string;
     srcIndex: number;
     description: string;
     showSpinner = false;
@@ -49,6 +55,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     index = 0;
 
     @Input() images: string[] | SafeResourceUrl[];
+    @Input() mimeTypes: string[];
     @Input() descriptions: string[];
     @Input() showDescription: boolean;
     @Input() arrows: boolean;
@@ -434,6 +441,7 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
         this.src = this.getSafeUrl(<string>this.images[this.index]);
         this.srcIndex = this.index;
         this.description = this.descriptions[this.index];
+        this.mimeType = this.mimeTypes[this.index];
         this.changeDetectorRef.markForCheck();
 
         setTimeout(() => {
