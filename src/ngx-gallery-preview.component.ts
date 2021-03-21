@@ -30,7 +30,7 @@ import { NgxGalleryHelperService } from './ngx-gallery-helper.service';
                 <img *ngIf="src && mimeType === 'image/jpeg'" #previewImage class="ngx-gallery-preview-img ngx-gallery-center" [src]="src" (click)="$event.stopPropagation()" (mouseenter)="imageMouseEnter()" (mouseleave)="imageMouseLeave()" (mousedown)="mouseDownHandler($event)" (touchstart)="mouseDownHandler($event)" [class.ngx-gallery-active]="!loading" [class.animation]="animation" [class.ngx-gallery-grab]="canDragOnZoom()" [style.transform]="getTransform()" [style.left]="positionLeft + 'px'" [style.top]="positionTop + 'px'"/>
                 <ng-container *ngIf="src && mimeType === 'application/pdf'">
                     <div style="display: flex;align-items: center;justify-content: center;">
-                        <iframe [src]="src" width="600px" height="600px"></iframe>
+                        <iframe [src]="src" width="800px" height="600px"></iframe>
                     </div>
                 </ng-container>
                 <ngx-gallery-bullets *ngIf="bullets" [count]="images.length" [active]="index" (onChange)="showAtIndex($event)"></ngx-gallery-bullets>
@@ -279,8 +279,9 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
     }
 
     getSafeUrl(image: string): SafeUrl {
+        console.log(image);
         return image.substr(0, 10) === 'data:image' ?
-            image : this.sanitization.bypassSecurityTrustUrl(image);
+            image : this.sanitization.bypassSecurityTrustResourceUrl(image);
     }
 
     zoomIn(): void {
