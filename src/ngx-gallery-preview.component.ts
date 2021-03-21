@@ -466,6 +466,8 @@ export class NgxGalleryPreviewComponent implements OnInit, OnChanges {
                         this.changeDetectorRef.markForCheck();
                     }
                 }
+            } else {
+                this.loading = false;
             }
 
         })
