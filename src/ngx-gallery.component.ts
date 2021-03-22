@@ -275,7 +275,7 @@ export class NgxGalleryComponent implements OnInit, DoCheck, AfterViewInit   {
             index: i
         }));
         this.bigImages = this.images.map((img) => <string>img.big);
-        this.mimeTypes = this.images.map((img) => <string>img.mimeType);
+        this.mimeTypes = this.images.map((img) => img.mimeType ? <string>img.mimeType : 'image/jpeg');
         this.descriptions = this.images.map((img) => <string>img.description);
         this.links = this.images.map((img) => <string>img.url);
         this.labels = this.images.map((img) => <string>img.label);
